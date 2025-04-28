@@ -1,31 +1,12 @@
-import Ajv from 'ajv';
-import addFormats from 'ajv-formats';
-const ajv = new Ajv();
-addFormats(ajv);
-const schema = {
-    type: 'object',
-    properties: {
-        username: {
-            type: 'string',
-            minLength: 5,
-            maxLength: 30
-        },
-        email: {
-            type: 'string',
-            format: 'email'
-        },
-    },
-    required: ['username', 'email']
-};
-const validate = ajv.compile(schema);
+import z from 'zod';
+const UserSchema = z.object({
+    username: z.string().min(5, 'at least 5 characters').max(50, 'at most 50 characters'),
+    email: z.string().email(),
+});
 const validateAccount = (req, res, next) => {
-    const valid = validate(req.body);
-    if (!valid) {
-        res.status(400).json({
-            error: 'invalid request body',
-            details: validate.errors
-        });
-        return;
+    const validation = UserSchema.safeParse(req.body);
+    if (!validation.success) {
+        return res.status(400).json({ errors: validation.error.issues });
     }
     next();
 };

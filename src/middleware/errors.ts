@@ -1,11 +1,16 @@
 import { Request, Response, NextFunction } from 'express';
 
-const errorHandler = (err: any, req: Request, res: Response, next: NextFunction) => {
+const errorHandler = async (err: any, req: Request, res: Response, next: NextFunction) => {
+    if (err.message === '404' || err.code === 'P2025') {
+        res.status(404).json({ error: 'Resource not found' });
+        return;
+    }
+
     console.log('Error message', err.message);
     console.log('Error code', err.code);
     console.log('Error stack', err.stack);
 
-    res.status(500).json({ error: 'Something went wrong' });
-}
+    res.status(500).json({ error: 'Something went wrong' }); return;
+};
 
 export default { errorHandler };

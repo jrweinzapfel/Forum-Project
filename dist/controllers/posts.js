@@ -35,8 +35,23 @@ export const deletePost = async (req, res) => {
     });
     res.sendStatus(200);
 };
-export const createLike = (req, res) => {
-    res.json({ message: 'hit' });
+export const createLike = async (req, res) => {
+    const postId = Number.parseInt(req.params.postId);
+    const userId = Number.parseInt(req.params.userId);
+    const post = await prisma.post.update({
+        where: { id: postId },
+        data: {
+            likes: {
+                connect: {
+                    id: userId,
+                },
+            },
+        },
+        include: {
+            _count: true
+        }
+    });
+    res.status(201).json({ postLikeCount: post._count.likes });
 };
 export const deleteLike = (req, res) => {
     res.json({ message: 'hit' });

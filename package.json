@@ -7,6 +7,9 @@
     "start": "node dist/app.js",
     "dev": "nodemon --files --ext ts,js,json --exec \"node --no-warnings --loader ts-node/esm src/app.ts\""
   },
+  "prisma": {
+    "seed": "node --loader ts-node/esm src/seed.ts"
+  },
   "type": "module",
   "keywords": [],
   "author": "",
@@ -15,10 +18,14 @@
   "dependencies": {
     "@apideck/better-ajv-errors": "^0.3.6",
     "@prisma/client": "^6.5.0",
+    "@types/bcrypt": "^5.0.2",
     "@types/express": "^5.0.1",
+    "@types/jsonwebtoken": "^9.0.9",
     "@types/node": "^22.13.10",
+    "bcrypt": "^5.1.1",
     "dotenv": "^16.4.7",
     "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.13.0",
     "typescript": "^5.8.2",
     "xss": "^1.0.15",

@@ -13,7 +13,7 @@ app.use(xss);
 app.use(logging.logRequest);
 app.use((req, res, next) => {
     req.user = {
-        id: 6,
+        userId: 6,
     };
     next();
 });

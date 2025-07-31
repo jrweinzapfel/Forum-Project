@@ -19,12 +19,25 @@ model User {
   username String  @unique
   name     String
   verified Boolean @default(true)
+  roles    Roles[]
 
   notificationSettings NotificationSettings[]
   posts                Post[]
   postsLiked           Post[]                 @relation("PostLikes")
   postsFollowed        Post[]                 @relation("PostFollows")
   replies              Reply[]
+  password             Password?
+}
+
+model Password {
+  id     Int    @id @default(autoincrement())
+  userId Int    @unique
+  hash   String
+  user   User   @relation(fields: userId, references: id, onDelete: Cascade)
+}
+
+enum Roles {
+  ADMIN
 }
 
 enum NotificationSettings {

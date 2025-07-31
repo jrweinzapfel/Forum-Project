@@ -1,18 +1,12 @@
 import express, { NextFunction, Request, Response } from 'express';
 import prisma from '../prisma.js';
 import { RequestHandler } from 'express-serve-static-core';
+import bcrypt from 'bcrypt';
 
 export const getUsers: RequestHandler = async (req, res) => {
     const users = await prisma.user.findMany();
     res.json({ users });
 };
-
-export const createUser: RequestHandler = async (req, res, next) => {
-    const user = await prisma.user.create({
-        data: req.body,
-    });
-    res.status(201).json({ user });
-}
 
 export const getUser: RequestHandler = async (req, res, next) => {
     const id = Number.parseInt(req.params.id);
@@ -27,7 +21,7 @@ export const getUser: RequestHandler = async (req, res, next) => {
 };
 
 export const updateUser: RequestHandler = async (req, res) => {
-    const id = Number.parseInt(req.params.id);
+    const id = req.user.id
     const user = await prisma.user.update({
         where: { id: id },
         data: req.body
@@ -37,7 +31,15 @@ export const updateUser: RequestHandler = async (req, res) => {
 }
 
 export const deleteUser: RequestHandler = async (req, res) => {
-    const id = Number.parseInt(req.params.id);
+    const id = req.user.id;
+    const user = await prisma.user.delete({
+        where: { id: id }
+    });
+    res.sendStatus(200);
+}
+
+export const adminDeleteUser: RequestHandler = async (req, res) => {
+    const id = parseInt(req.params.id);
     const user = await prisma.user.delete({
         where: { id: id }
     });

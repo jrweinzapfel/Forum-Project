@@ -8,6 +8,7 @@ CREATE TABLE "User" (
     "username" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "verified" BOOLEAN NOT NULL DEFAULT true,
+    "password" TEXT NOT NULL,
     "notificationSettings" "NotificationSettings"[],
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
@@ -42,7 +43,6 @@ CREATE TABLE "Reply" (
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "userId" INTEGER NOT NULL,
     "postId" INTEGER NOT NULL,
-    "published" BOOLEAN NOT NULL DEFAULT false,
 
     CONSTRAINT "Reply_pkey" PRIMARY KEY ("id")
 );

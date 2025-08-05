@@ -10,11 +10,15 @@ import authRouter from './routes/auth.js';
 import authenticated from './middleware/auth.js';
 
 const app = express();
-const port = 3000;
+const port = 8080;
 
 app.use(express.json());
 app.use(xss);
 app.use(logging.logRequest);
+
+app.get('/', (req, res) => {
+    res.json({ message: 'hello!' });
+});
 
 app.use('/v1/auth', authRouter);
 

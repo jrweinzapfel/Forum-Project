@@ -3,12 +3,6 @@ export const getUsers = async (req, res) => {
     const users = await prisma.user.findMany();
     res.json({ users });
 };
-export const createUser = async (req, res, next) => {
-    const user = await prisma.user.create({
-        data: req.body,
-    });
-    res.status(201).json({ user });
-};
 export const getUser = async (req, res, next) => {
     const id = Number.parseInt(req.params.id);
     const user = await prisma.user.findFirst({
@@ -20,7 +14,7 @@ export const getUser = async (req, res, next) => {
     res.json({ user });
 };
 export const updateUser = async (req, res) => {
-    const id = Number.parseInt(req.params.id);
+    const id = req.user.id;
     const user = await prisma.user.update({
         where: { id: id },
         data: req.body
@@ -28,7 +22,14 @@ export const updateUser = async (req, res) => {
     res.json(user);
 };
 export const deleteUser = async (req, res) => {
-    const id = Number.parseInt(req.params.id);
+    const id = req.user.id;
+    const user = await prisma.user.delete({
+        where: { id: id }
+    });
+    res.sendStatus(200);
+};
+export const adminDeleteUser = async (req, res) => {
+    const id = parseInt(req.params.id);
     const user = await prisma.user.delete({
         where: { id: id }
     });

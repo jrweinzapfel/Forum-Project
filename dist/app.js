@@ -6,22 +6,23 @@ import logging from './middleware/logging.js';
 import errors from './middleware/errors.js';
 import xss from './middleware/xss.js';
 import notFound from './middleware/notFound.js';
+import authRouter from './routes/auth.js';
+import authenticated from './middleware/auth.js';
 const app = express();
-const port = 3000;
+const port = 8080;
 app.use(express.json());
 app.use(xss);
 app.use(logging.logRequest);
-app.use((req, res, next) => {
-    req.user = {
-        userId: 6,
-    };
-    next();
+app.get('/', (req, res) => {
+    res.json({ message: 'hello!' });
 });
+app.use('/v1/auth', authRouter);
+app.use(authenticated);
 app.use('/v1/users', usersRouter);
 app.use('/v1/posts', postsRouter);
 app.use('/v1/replies', repliesRouter);
-app.use(notFound);
 app.use(errors.errorHandler);
+app.use(notFound);
 app.listen(port, () => {
     console.log(`App listening at http://localhost:${port}.`);
 });

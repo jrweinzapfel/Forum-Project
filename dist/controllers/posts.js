@@ -5,7 +5,7 @@ export const getPosts = async (req, res) => {
 };
 export const createPost = async (req, res) => {
     const body = req.body;
-    body.userId = req.user.userId;
+    body.userId = req.user.id;
     const post = await prisma.post.create({
         data: body,
     });
@@ -26,7 +26,7 @@ export const getPost = async (req, res, next) => {
     res.json({ post });
 };
 export const updatePost = async (req, res) => {
-    const postId = req.user.userId;
+    const postId = req.user.id;
     const post = await prisma.user.update({
         where: { id: postId },
         data: req.body,
@@ -42,7 +42,7 @@ export const deletePost = async (req, res) => {
 };
 export const createLike = async (req, res) => {
     const postId = Number.parseInt(req.params.id);
-    const userId = req.user.userId;
+    const userId = req.user.id;
     console.log(userId);
     const post = await prisma.post.update({
         where: { id: postId },
@@ -81,7 +81,7 @@ export const deleteLike = async (req, res) => {
 };
 export const createFollow = async (req, res) => {
     const postId = Number.parseInt(req.params.id);
-    const userId = req.user.userId;
+    const userId = req.user.id;
     console.log(userId);
     const post = await prisma.post.update({
         where: { id: postId },
@@ -134,7 +134,7 @@ export const getReplies = async (req, res, next) => {
 export const createReply = async (req, res) => {
     const postId = parseInt(req.body.id);
     const body = req.body;
-    body.userId = req.user.userId;
+    body.userId = req.user.id;
     const reply = await prisma.reply.create({
         data: body,
     });

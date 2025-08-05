@@ -1,13 +1,22 @@
 import z from 'zod';
-const UserSchema = z.object({
-    username: z.string().min(5, 'at least 5 characters').max(50, 'at most 50 characters'),
-    email: z.string().email(),
-});
-const validateAccount = (req, res, next) => {
-    const validation = UserSchema.safeParse(req.body);
-    if (!validation.success) {
-        return res.status(400).json({ errors: validation.error.issues });
+import * as schemas from './schemas.js';
+import { ValidationError } from './errors.js';
+export const validateParamId = (req, res, next) => {
+    const result = z.number().int().nonnegative().safeParse(parseInt(req.params.id));
+    if (!result.success) {
+        return next(new ValidationError(result.error.issues));
     }
     next();
 };
-export default { validateAccount };
+export const validateBody = (schema) => (req, res, next) => {
+    const result = schema.safeParse(req.body);
+    if (!result.success) {
+        return next(new ValidationError(result.error.issues));
+    }
+    next();
+};
+export const createUser = validateBody(schemas.Account);
+export const login = validateBody(schemas.Login);
+export const updateUser = validateBody(schemas.UserUpdate);
+export const updatePost = [validateParamId, validateBody(schemas.PostUpdate)];
+export const createPost = validateBody(schemas.Post);

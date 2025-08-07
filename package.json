@@ -8,7 +8,7 @@
     "dev": "nodemon --files --ext ts,js,json --exec \"node --no-warnings --loader ts-node/esm src/app.ts\""
   },
   "prisma": {
-    "seed": "node --loader ts-node/esm src/seed.ts"
+    "seed": "node dist/seed.js"
   },
   "type": "module",
   "keywords": [],
